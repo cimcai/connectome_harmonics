@@ -1,3 +1,7 @@
 .venv/
 .cache/
+nilearn_cache/
 __pycache__/
+lsd_results/*
+!lsd_results/lsd_harmonic_spectra.json
+!lsd_results/lsd_harmonic_spectra.png

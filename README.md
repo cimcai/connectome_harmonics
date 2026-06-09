@@ -24,9 +24,14 @@ The graph Laplacian \(L = I - D^{-1/2} W D^{-1/2}\) turns a connectome into a ge
 
 ### Deploy on fractastical GitHub Pages
 
-1. Create a public empty repo: `fractastical/connectome_harmonics`
+**Live URL:** https://fractastical.github.io/connectome_harmonics/
+
+1. Create a public empty repo at https://github.com/new → owner **fractastical**, name **connectome_harmonics**
 2. Push: `git push fractastical main`
-3. Repo **Settings → Pages → Source: GitHub Actions** (workflow already in `.github/workflows/pages.yml`)
+3. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**
+4. First deploy: **Actions** tab → approve **github-pages** environment if prompted
+
+The workflow in `.github/workflows/pages.yml` publishes `index.html`, connectome JSON data, and LSD result plots automatically on every push to `main`.
 
 **Python animation:**
 ```bash
@@ -39,6 +44,13 @@ python3 -m venv .venv
 **Rebuild real connectome data (option 1 — HCP Schaefer-400 SC):**
 ```bash
 .venv/bin/python build_connectome_data.py
+```
+
+**LSD harmonic analysis (OpenNeuro ds003059 + CHAP-style projection):**
+```bash
+python3 -m venv .venv-lsd && .venv-lsd/bin/pip install -r requirements-lsd.txt
+.venv-lsd/bin/python analyze_lsd_harmonics.py --max-subjects 2   # quick demo
+.venv-lsd/bin/python analyze_lsd_harmonics.py                    # full cohort (~10 GB download)
 ```
 
 ## Data sources

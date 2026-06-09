@@ -148,7 +148,9 @@
         <p><strong>↑ High-frequency harmonics</strong> (fine-grained modes) contribute more.</p>
         <p><strong>Expanded repertoire</strong> — more distinct harmonic brain states become active, with correlated cross-frequency co-activation.</p>
       </div>
-      <p class="small" style="margin-top:8px;">Raw LSD fMRI is public on <a href="https://openneuro.org/datasets/ds003059" target="_blank" rel="noopener">OpenNeuro ds003059</a>; harmonic decomposition requires running a pipeline such as <a href="https://github.com/HopkinsPsychedelic/connectome_harmonic_core" target="_blank" rel="noopener">CHAP</a>.</p>
+      <p class="small" style="margin-top:8px;">We ran a <strong>parcellated</strong> CHAP-style analysis on <a href="https://openneuro.org/datasets/ds003059" target="_blank" rel="noopener">OpenNeuro ds003059</a> (demo: 1 subject). Full vertex-level pipeline: <a href="https://github.com/HopkinsPsychedelic/connectome_harmonic_core" target="_blank" rel="noopener">CHAP</a>.</p>
+      <img id="lsdPlot" src="lsd_results/lsd_harmonic_spectra.png" alt="LSD vs placebo harmonic power spectra" style="width:100%;margin-top:10px;border-radius:12px;display:none;" />
+      <p class="small" id="lsdPlotCaption" style="margin-top:8px;display:none;"></p>
     </div>
 
     <div class="card">
@@ -507,7 +509,24 @@ async function boot(){
   if (!animStarted) { animStarted = true; requestAnimationFrame(frame); }
 }
 
+async function loadLsdResults(){
+  try {
+    const res = await fetch('lsd_results/lsd_harmonic_spectra.json');
+    if (!res.ok) return;
+    const d = await res.json();
+    const img = document.getElementById('lsdPlot');
+    const cap = document.getElementById('lsdPlotCaption');
+    if (img) img.style.display = 'block';
+    if (cap) {
+      const s = d.summary;
+      cap.style.display = 'block';
+      cap.textContent = `Group spectra (${d.meta.n_subjects} subjects): low-band LSD/PCB ratio ${s.low_band_mean_ratio.toFixed(2)}, high-band ${s.high_band_mean_ratio.toFixed(2)} — matches Atasoy 2017 direction.`;
+    }
+  } catch (_) {}
+}
+
 boot();
+loadLsdResults();
 </script>
 </body>
 </html>
